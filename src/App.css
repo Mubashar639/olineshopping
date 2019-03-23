@@ -2,12 +2,21 @@
   text-align: center;
 }
 
-.App-logo {
+.good {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
+  position: absolute;
+  top:40vh;
 }
-
+.heading {
+  animation: App-logo-spin infinite 20s linear;
+  height: 20vmin;
+  pointer-events: none;
+  position: absolute;
+  top:50vh;
+  left: 40wv;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

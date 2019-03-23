@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Upload from "./compunent/uploadadd"
+import Appbar from './compunent/Appbar';
+import Gallery from "./compunent/gallery";
+import {  Switch,BrowserRouter, Route } from "react-router-dom";
+import Detail from './compunent/details';
+import Selected from './compunent/selected';
+import Login from './compunent/login';
+import Register from './compunent/Register';
 
 class App extends Component {
+
+
   render() {
+    console.log(this.props.array)
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <header>
+         
+            <Appbar />
+          </header>
+        <Switch>
+       <Route exact path="/details/:pti" component={Detail}/>
+       <Route  exact path="/selected" component={Selected}/>
+       <Route  path="/login" component={Login}/>
+       <Route  path="/upload" component={Upload}/>
+       <Route  path="/register" component={Register}/>
+
+        <Route path="/" component={Gallery} />
+        </Switch>
+        </div>
+      </BrowserRouter>
+     
     );
   }
 }
+export default App
 
-export default App;
