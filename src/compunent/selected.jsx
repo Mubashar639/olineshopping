@@ -158,7 +158,7 @@ class Album extends Component {
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-        img style={{float:"left"}} src={footer} alt="slow connection" srcset=""/>
+        <img style={{float:"left"}} src={footer} alt="slow connection" srcset=""/>
           <Typography variant="h6" align="center" gutterBottom>
             
         </Typography>
