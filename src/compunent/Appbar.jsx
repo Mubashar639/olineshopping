@@ -148,6 +148,8 @@ class PrimarySearchAppBar extends React.Component {
       >
       <Link to="login"><MenuItem onClick={this.handleMenuClose}>Loggin</MenuItem></Link>
       <Link to="register"><MenuItem onClick={this.handleMenuClose}>Register</MenuItem></Link>
+      <Link to="upload"><MenuItem onClick={this.handleMenuClose}>upload</MenuItem></Link>
+
         
         
       </Menu>
