@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Link, Route,Redirect} from "react-router-dom";
+import { Link, Route, Redirect } from "react-router-dom";
 import footer from "../images/footer.PNG"
 
 import Button from '@material-ui/core/Button';
@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux"
 import { withStyles } from '@material-ui/core/styles';
 
-import tick from "../images/tick.png" 
+import tick from "../images/tick.png"
 
 
 const styles = theme => ({
@@ -69,29 +69,19 @@ const styles = theme => ({
 
 
 class Album extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       cards: [],
-     
+
     }
 
   }
 
-  login = (data) => {
-    this.props.selectedindex(data);
-      console.log(" login runing");
-      var image = document.createElement("img");
-     
-      image.src=tick;
-      image.setAttribute("class","good");
-     
-      this.refs.container.appendChild(image);
-      setTimeout(() => {
-        image.remove();
-
-      }, 2000);     
-
+  login = (index) => {
+    this.props.selectedindex(index)  
+    this.openForm();
+    console.log(index)
   }
   renderRedirect = () => {
     if (!this.props.islogin) {
@@ -100,25 +90,49 @@ class Album extends Component {
   }
 
   componentDidMount() {
-    
+
     console.log(" this is props change")
     this.setState({
-      cards:this.props.cards
+      cards: this.props.cards
     })
   }
 
-  
-  
+  openForm() {
+    document.getElementById("formme").style.display = "block";
+  }
+
+  closeForm() {
+    
+    document.getElementById("formme").style.display="none"
+  }
+  confirm= (data,index)=>{
+    data.preventDefault();
+      console.log(data);
+      console.log(index)
+    console.log(" login runing");
+    var image = document.createElement("img");
+    image.src = tick;
+    image.setAttribute("class", "good");
+
+    this.refs.container.appendChild(image);
+    setTimeout(() => {
+      image.remove();
+
+    }, 2000);
+
+    document.getElementById("formme").style.display="none"
+
+  }
   render() {
     const { classes } = this.props;
-    
+
     return (
       <React.Fragment>
-       {this.renderRedirect()}
+         {this.renderRedirect()}
         <CssBaseline />
         <main>
           {/* Hero unit */}
-         
+
           <div ref="container" className={classNames(classes.layout, classes.cardGrid)}>
             {/* End hero unit */}
             <Grid container spacing={40}>
@@ -140,28 +154,63 @@ class Album extends Component {
                         </Typography>
                       </CardContent>
 
-                      
+
                     </Link>
 
-     
-                    <Button onClick={()=>this.login(index)} size="small" color="primary">
+
+                    <Button onClick={() => this.login(index)} size="small" color="primary">
                       Confirm Order
                     </Button>
-                   
-                  </Card>
-                  <Route exact path={"/details" + card.name + index} />
+                    </Card>
+                <Route exact path={"/details" + card.name + index} />
                 </Grid>
 
-              ))}
+        ))}
             </Grid>
+            <div id="formme" style={{
+                      width: "100 %",
+                      height:" 100 %",
+                      opacity: ".95",
+                    margin: "auto",
+                      display: "none",
+                      position: "absolute",
+                      top:"200px",
+                      left:"15%",
+                      backgroundColor: "#313131",
+                        overflow:"auto"}} >
+                  <form style={{
+                    maxWidth: "300px",
+                    minWidth: "250px",
+                    padding: "10px 50px",
+                    border: "2px solid gray",
+                    borderRadius: "10px",
+                    fontFamily: "raleway",
+                    backgroundColor: "#fff",
+                  }}
+                    action="/ordered" method="POST" class="form-container">
+                    <h1>Order Confirm</h1>
+
+                    <label htmlFor="email"><b>Full  name</b></label>
+                    <input type="text" placeholder="Enter name" name="username" required />
+                    <label htmlFor="number"><b>Phone Number</b></label>
+                    <input type="text" placeholder="Enter Number" name="number" required />
+                    <label htmlFor="item"><b> Number of item</b></label>
+                    <input type="number" placeholder="Enter Number of item" name="item" required />
+                    <label htmlFor="adress"><b>Home Address</b></label>
+                    <input type="text" placeholder="Enter adress" name="adress" required />
+
+                    <button type="submit" onClick={(e)=>{this.confirm(e)}} >Confirm</button>
+                    <button type="button" class="btn cancel" onClick={this.closeForm}>Close</button>
+                  </form>
+                  </div>
           </div>
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-        <img style={{float:"left"}} src={footer} alt="slow connection" srcset=""/>
+          <img style={{ width:"100%" }} src={footer} alt="slow connection" srcset="" />
           <Typography variant="h6" align="center" gutterBottom>
-            
-        </Typography>
+
+          </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
             Something here to give the footer a purpose!
         </Typography>
@@ -191,14 +240,14 @@ Album.propTypes = {
 function mapStateToProps(state) {
   return ({
     cards: state.todo.selectedcard,
-  
-    islogin: state.login.islogin,    
+
+    islogin: state.login.islogin,
   })
 }
 function mapDispatchToProps(dispatch) {
   return {
-        selectedindex: (data) => dispatch({ type: "ordered", index: data }),
-        
+    selectedindex: (data) => dispatch({ type: "ordered", index: data }),
+
   }
 }
 // export default withStyles(styles)(Album)
