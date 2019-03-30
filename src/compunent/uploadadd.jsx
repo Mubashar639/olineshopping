@@ -45,8 +45,21 @@ class ImageUpload extends Component {
             this.setState({url});
         }).then((res)=>{
           console.log(res);
-          let object={img:this.state.url,name:document.getElementById("details").value ,Prize:document.getElementById("prize").value}
-          this.props.uploadadd(object)
+          let object={img:this.state.url,name:document.getElementById("details").value ,Prize: "RS . "+document.getElementById("prize").value}
+          return object;
+        }).then((object)=>{
+          console.log(object)
+          fetch("/upload", {
+            method: "POST",
+            headers: {
+                "Content-type": "Application/JSON"
+            },
+            body: JSON.stringify(object)
+            
+        })
+            .then(function (resp) {
+                console.log(resp);
+            })
         })
     });
     
@@ -91,12 +104,6 @@ class ImageUpload extends Component {
 //     array: state.todo.selected
 //   })
 // }
-function mapDispatchToProps(dispatch) {
-  return {
-    uploadadd: (data) => dispatch({ type: "upload", upload: data }),
-    
 
-  }
-}
 // export default withStyles(styles)(Album)
-export default connect(null, mapDispatchToProps)((ImageUpload))
+export default connect(null, )((ImageUpload))

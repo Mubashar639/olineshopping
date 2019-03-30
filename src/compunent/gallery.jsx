@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux"
 import { withStyles } from '@material-ui/core/styles';
 import footer from "../images/footer.PNG"
+import store from '../store/store';
 
 
 
@@ -70,7 +71,7 @@ class Album extends Component {
     super(props)
     this.state = {
       cards: [],
- 
+      all:[]
     }
 
   }
@@ -87,9 +88,23 @@ class Album extends Component {
     this.setState({
       cards:this.props.cards
     })
-  }
+    fetch('/getuploaddata', {
+      method: 'GET'
+  }).then(function (all) {
+      console.log(all);
+      return all.json();
+  })
+      .then(function (all) {
+          console.log(all);
+       store.dispatch({type: "fdata", array:all})
+      })
 
-  c
+    setTimeout(() => {
+      this.setState({
+        cards:this.props.cards
+      })  
+    }, 500);
+  }
   
   render() {
     const { classes } = this.props;
@@ -180,8 +195,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getindex: (data) => dispatch({ type: "value", index: data }),
-    startRedux: () => dispatch({ type: "start"})
-
+    startRedux: () => dispatch({ type: "start"}),
+    sendStore:(data)=> dispatch({type: "fdata", array:data})
   }
 }
 // export default withStyles(styles)(Album)
