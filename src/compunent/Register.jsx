@@ -15,6 +15,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {connect} from "react-redux";
 import store from "../store/store";
 import { Link,Redirect } from 'react-router-dom';
+import { auth } from '../firebase/index';
 const styles = theme => ({
   main: {
     width: 'auto',
@@ -50,11 +51,13 @@ const styles = theme => ({
   class Register extends Component {
     constructor(props){
       super(props)
+       window.validemail=false;
       this.state = {
         email:"",
         password:"",
    
       }
+    
     }
     renderRedirect = () => {
       if (this.props.isregister) {
@@ -64,19 +67,28 @@ const styles = theme => ({
   
     onlogin=(event)=>{
       event.preventDefault();
+      if(window.validemail){
       console.log("this is email ")
         let mail=document.getElementById("email").value;
         let pass=document.getElementById("password").value;
         let pnumber=document.getElementById("pnumber").value;
         let adress=document.getElementById("address").value;
         let fname=document.getElementById("fname").value;
+        const promise=auth.createUserWithEmailAndPassword(mail,pass);
+        promise.then(()=>{
+          let object= {username:mail,password:pass,phone:pnumber,homeAdress:adress,fullname:fname};
+          localStorage.setItem("register",JSON.stringify(object));
+  
+          this.props.register(object)
+          console.log(store.getState());
+          console.log(object)
+        }).catch((e)=>{console.log(e.message)
+      document.getElementById("check").innerHTML="<h6> "+e.message+"</h6>"
+    });
+      }else{
+        window.alert("Please make sure correct email")
+      }
 
-        let object= {username:mail,password:pass,phone:pnumber,homeAdress:adress,fullname:fname};
-        localStorage.setItem("register",JSON.stringify(object));
-
-        this.props.register(object)
-        console.log(store.getState());
-        console.log(object)
     }
     ValidateEmail()
     {
@@ -85,12 +97,15 @@ const styles = theme => ({
     {
       document.getElementById("email").focus();
       document.getElementById("check").innerHTML="";
+      
+        window.validemail=true;
+    
     return true;
     }
     else
     {
       document.getElementById("check").innerHTML="<h6> you have enter wrong email</h6>"
-   
+      window.validemail=false;
     return false;
     }
     }

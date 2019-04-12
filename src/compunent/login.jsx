@@ -15,7 +15,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {connect} from "react-redux";
 import store from "../store/store";
 import { Link,Redirect } from 'react-router-dom';
-
+import { auth } from '../firebase/index';
 
 const styles = theme => ({
   main: {
@@ -66,13 +66,20 @@ const styles = theme => ({
       console.log("this is email ")
         let mail=document.getElementById("email").value
         let pass=document.getElementById("password").value
-        let object= {username:mail,password:pass};
-        
-        this.props.startlogin(object);
-        if (!this.props.islogin) {
-          document.getElementById("goregister").innerHTML="<h6> you have enter incorect email and password \n go for register</h6>"
-        }
-        console.log(store.getState());
+        const promise=auth.signInWithEmailAndPassword(mail,pass);
+        promise.then(()=>{
+          let object= {username:mail,password:pass};
+          this.props.startlogin(object);
+          if (!this.props.islogin) {
+            document.getElementById("goregister").innerHTML="<h6> you have enter incorect email and password \n go for register</h6>"
+          }
+          console.log(store.getState());
+          
+        }).catch((e)=>{
+          console.log(e.message)
+      document.getElementById("check").innerHTML="<h6> "+e.message+"</h6>"
+
+        })
   
     }
     renderRedirect = () => {
