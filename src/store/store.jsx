@@ -6,7 +6,7 @@ let intialState = {
     update: false,
     selectedcard: [],
     islogin: false,
-    isregister: false,
+    isregister: true,
     register: [],
     cards:[],
     odered: [],
@@ -24,48 +24,31 @@ function adds(state = intialState, action) {
             return {
                 ...state
             }
-        default:
-            return {
-                ...state
-            }
-    }
-}
-function todo(state = intialState, action) {
-    switch (action.type) {
-        case "value":
+     case "value":
             state.selected.push(action.index);
             state.selectedcard.push(state.cards[action.index])
-            state.update = !state.update
+          state.update = !state.update
             return {
                 ...state,
 
             }
-
-
         default:
             return {
                 ...state
             }
     }
 }
+
 function login(state = intialState, action) {
 
     switch (action.type) {
         case "register":
-            state.register.push(action.match);
-            state.isregister = true;
             return {
                 ...state
             }
 
         case "login":
-            let filter = state.register.filter((item) => {
-                if (item.username === action.match.username && item.password === action.match.password) {
-                    state.update = !state.update
-                    state.islogin = true;
-                    return true;
-                }
-            })
+            
             return {
                 ...state
             }
@@ -86,7 +69,7 @@ function login(state = intialState, action) {
     }
 }
 
-const store = createStore(combineReducers({ todo, adds, login }));
+const store = createStore(combineReducers({ adds, login }));
 store.dispatch({
     type: "start"
 })

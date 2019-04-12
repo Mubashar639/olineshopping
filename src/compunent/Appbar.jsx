@@ -257,8 +257,8 @@ PrimarySearchAppBar.propTypes = {
 
 function mapStateToProps(state) {
   return ({
-    array: state.todo.selected,
-    propupdate: state.todo.update
+    array: state.adds.selected,
+    propupdate: state.adds.update
   })
 }
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link, Route, Redirect } from "react-router-dom";
 import footer from "../images/footer.PNG"
+import { auth } from '../firebase/index';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -73,18 +74,28 @@ class Album extends Component {
     super(props)
     this.state = {
       cards: [],
+      login:false
 
     }
 
   }
 
   login = (index) => {
-    this.props.selectedindex(index)  
-    this.openForm();
-    console.log(index)
+    auth.onAuthStateChanged(firebase=>{
+      if(firebase){console.log(firebase)
+        this.props.selectedindex(index)  
+        this.openForm();
+        console.log(index)
+        this.setState({
+          islogin:true
+        })
+      }else{
+        this.renderRedirect();
+      }
+    })
   }
   renderRedirect = () => {
-    if (!this.props.islogin) {
+    if (!this.state.islogin) {
       return <Redirect to='/login' />
     }
   }
@@ -128,7 +139,6 @@ class Album extends Component {
 
     return (
       <React.Fragment>
-         {this.renderRedirect()}
         <CssBaseline />
         <main>
           {/* Hero unit */}
@@ -239,7 +249,7 @@ Album.propTypes = {
 // }
 function mapStateToProps(state) {
   return ({
-    cards: state.todo.selectedcard,
+    cards: state.adds.selectedcard,
 
     islogin: state.login.islogin,
   })

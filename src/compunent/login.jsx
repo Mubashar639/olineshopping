@@ -56,7 +56,8 @@ const styles = theme => ({
       this.state = {
         email:"",
         password:"",
-        emailvalidate:false
+        emailvalidate:false,
+        islogin:false
    
       }
     }
@@ -74,6 +75,9 @@ const styles = theme => ({
             document.getElementById("goregister").innerHTML="<h6> you have enter incorect email and password \n go for register</h6>"
           }
           console.log(store.getState());
+          this.setState({
+            islogin:true
+          })
           
         }).catch((e)=>{
           console.log(e.message)
@@ -83,7 +87,7 @@ const styles = theme => ({
   
     }
     renderRedirect = () => {
-      if (this.props.islogin) {
+      if (this.state.islogin) {
         return <Redirect to='/selected' />
       }
     }

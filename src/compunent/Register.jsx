@@ -55,12 +55,13 @@ const styles = theme => ({
       this.state = {
         email:"",
         password:"",
+        isregister:false
    
       }
     
     }
     renderRedirect = () => {
-      if (this.props.isregister) {
+      if (this.state.isregister) {
         return <Redirect to='/login' />
       }
     }
@@ -82,6 +83,9 @@ const styles = theme => ({
           this.props.register(object)
           console.log(store.getState());
           console.log(object)
+          this.setState({
+            isregister:true
+          })
         }).catch((e)=>{console.log(e.message)
       document.getElementById("check").innerHTML="<h6> "+e.message+"</h6>"
     });

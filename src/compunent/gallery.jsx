@@ -189,7 +189,7 @@ Album.propTypes = {
 function mapStateToProps(state) {
   return ({
     cards: state.adds.cards,
-    array: state.todo.selected
+    array: state.adds.selected
   })
 }
 function mapDispatchToProps(dispatch) {
